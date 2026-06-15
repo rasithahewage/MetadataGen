@@ -1,5 +1,5 @@
 export async function retrieveSuggestion(data) {
-    const url = "/suggestion";
+    const url = "/fullsuggestion";
 
     return await fetch(url, {
         "method": "POST",

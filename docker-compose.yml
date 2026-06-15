@@ -9,7 +9,7 @@ services:
     container_name:
       metadata_gen
   logging_suggestion_db:
-    image: postgres:17.9
+    image: postgres:14.23
     env_file:
       - '.env'
     volumes:

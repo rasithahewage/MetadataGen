@@ -4,10 +4,11 @@ from app.llm_support.chain_educational_level_parser import parse_educational_lev
 from app.llm_support.gemini_chain import execute_chain
 from app.llm_support.chain_output_parser import parse_chain_output
 from app.metadatabuilder.build_full_metadata import build_metadata
+from app.metadatabuilder.build_optional_metadata import build_optional_metadata
 from app.translator.translator import translate
 
 
-def generate_suggestion(raw_data: dict) -> dict:
+def generate_full_suggestion(raw_data: dict) -> dict:
     """
     Generates the suggestions for the teaches, educationalAlignment, keywords and educationalLevel
     attribute according to the MOOChub supported frameworks. The title and description are translated
@@ -52,3 +53,37 @@ def generate_suggestion(raw_data: dict) -> dict:
                 raw_data["educationalLevel"] = llm_suggestion["educationalLevel"]
 
     return build_metadata(raw_data)
+
+
+def generate_optional_suggestions(raw_data):
+    """
+    Generates only the optional attributes keywords, educationalAlignment, teaches
+    and educationalLevel. The basis are the title and the description of a course.
+    Suggestions are generated according to this information. The data is returned in
+    the MOOChub format.
+
+    :param raw_data: The title and the description of a course.
+    :type raw_data: dict
+    :return: Metadata for the four optional attributes in the MOOChub format.
+    :rtype: dict
+    """
+    output_data = dict()
+
+    query = f"{raw_data['name']}. {raw_data['description']}"
+    query = translate(query)
+
+    teaches = search_frameworks([{"educationalFramework": "ESCO"}], query)
+    teaches = parse_suggestion(teaches)
+
+    ed_align = search_frameworks([{"educationalFramework": "ISCED-F"}], query)
+    ed_align = parse_suggestion(ed_align)
+
+    llm_suggestion = execute_chain(query, "DigComp")
+    llm_suggestion = parse_chain_output(llm_suggestion, "DigComp")
+
+    output_data["teaches"] = teaches
+    output_data["educationalAlignment"] = ed_align
+    output_data["educationalLevel"] = llm_suggestion["educationalLevel"]
+    output_data["keywords"] = llm_suggestion["keywords"]
+
+    return build_optional_metadata(output_data)

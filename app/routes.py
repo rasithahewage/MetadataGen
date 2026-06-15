@@ -3,7 +3,7 @@ import json
 
 from flask import Blueprint, Response, request, send_file, jsonify, render_template
 from app.metadatabuilder.build_full_metadata import build_metadata
-from app.suggestion_management.suggestion_manager import generate_suggestion
+from app.suggestion_management.suggestion_manager import generate_full_suggestion, generate_optional_suggestions
 from app.framework_handler.framework_data_manager import list_all_frameworks_with_top_level_entries, list_sub_entries
 
 
@@ -26,11 +26,18 @@ def generate_metadata() -> Response:
     )
 
 
-@main.route('/suggestion', methods=['POST'])
+@main.route('/fullsuggestion', methods=['POST'])
 def generate_metadata_with_suggestions() -> Response:
     data = request.get_json()
 
-    return jsonify(generate_suggestion(data))
+    return jsonify(generate_full_suggestion(data))
+
+
+@main.route('/suggestion', methods=['POST'])
+def generate_suggestions() -> Response:
+    data = request.get_json()
+
+    return jsonify(generate_optional_suggestions(data))
 
 
 @main.route('/')

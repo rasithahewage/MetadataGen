@@ -1,4 +1,4 @@
-from app.suggestion_management.suggestion_manager import generate_suggestion
+from app.suggestion_management.suggestion_manager import generate_full_suggestion
 from app.metadatabuilder.build_full_metadata import build_metadata
 #from pprint import pprint
 import json
@@ -78,5 +78,5 @@ llm_suggestion = {
 
 
 with open("test_output_full.json", 'w') as f:
-    f.write(json.dumps(generate_suggestion(raw_data), indent=4))
+    f.write(json.dumps(generate_full_suggestion(raw_data), indent=4))
 

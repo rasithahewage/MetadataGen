@@ -1,0 +1,23 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://github.com/moochub/metadatagen/input-examples/input-suggestions.json",
+    "title": "JSON schema for using the MetadataGen API just for suggestions of the optional attributes",
+    "description": "This schema specifies the JSON format that an JSON file in the HTTP POST request body must contain to use MetadataGen. This simplified schema can only be used with the \"/suggestion\" route and only returns the suggestions for keywords, educationalAlignment, teaches and educationalLevel attribute.",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "The title/name of the course",
+            "example": "Sustainability in the Digital Age: Efficient AI Techniques in the LLM Era"
+        },
+        "description": {
+            "type": "string",
+            "description": "Description of the course as an HTML document",
+            "example": "<h2>Welcome to the 'Sustainability in the Digital Age' series</h2> <p>In an era where digital technologies ..."
+        }
+    },
+    "required": [
+        "name",
+        "description"
+    ]
+}

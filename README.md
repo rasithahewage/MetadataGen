@@ -103,7 +103,12 @@ This effects the following attributes (the supported frameworks are given in bra
 - educationalLevel (DigComp)
 
 
-### Input data for receiving suggestions
+## Working with the API
+
+The MetadataGenerator is meant to be used via its API.
+The following parts show examples for API calls.
+
+### Input data for receiving full metadata including suggestions
 
 MetadataGen provides an API for generating suggestions for the attributes "educationalAlignment", "teaches", "keywords", "educationalLevel".
 It expects an HTTP POST request with a JSON file in the body.
@@ -112,12 +117,14 @@ The JSON file must follow the following schema:
 ```
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://github.com/moochub/metadatagen/
-    input-metadatagen",
+    "$id": "https://github.com/moochub/metadatagen/input-schemas/
+    input-metadatagen.json",
     "title": "JSON schema for using the MetadataGen API",
     "description": "This schema specifies the JSON format 
     that an JSON file in the HTTP POST request body must 
-    contain to use MetadataGen.",
+    contain to use the MetadataGen. This schema describes 
+    the input for a full valid metadata file according to 
+    the MOOChub format.",
     "type": "object",
     "properties": {
         "name": {
@@ -298,4 +305,45 @@ The JSON file must follow the following schema:
 }
 ```
 
+### Generating selected suggestions for keywords, educationalAlignment, teaches, educationalLevel
 
+It is possible to generate and receive only the suggestions as separated metadata.
+The metadata still follows the requirements of the MOOChub format but is not a full metadat file.
+This simultaneously simplifies the input data since only course title and description is needed here.
+An input schema is shown in the following:
+
+```
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://github.com/moochub/metadatagen/input-schemas/
+    input-suggestions.json",
+    "title": "JSON schema for using the MetadataGen API",
+    "description": "This schema specifies the JSON format that an 
+    JSON file in the HTTP POST request body must contain to use 
+    MetadataGen. This simplified schema can only be used with the 
+    "/suggestion" route and only returns the suggestions for 
+    keywords, educationalAlignment, teaches and educationalLevel 
+    attribute.",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "The title/name of the course",
+            "example": "Sustainability in the Digital Age: 
+            Efficient AI Techniques in the LLM Era"
+        },
+        "description": {
+            "type": "string",
+            "description": "Description of the course as an 
+            HTML document",
+            "example": "<h2>Welcome to the 'Sustainability 
+            in the Digital Age' series</h2> <p>In an 
+            era where digital technologies ..."
+        }
+    },
+    "required": [
+        "name",
+        "description"
+    ]
+}
+```
