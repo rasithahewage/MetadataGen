@@ -8,6 +8,7 @@ import {buildBaseUi} from "./selectFromFrameworks/baseUi.js";
 import {buildSuggestionButton} from "./suggestionRetriever/suggestionButton.js";
 import {collectData} from "./dataCollection/dataCollector.js";
 import {sendRawData} from "./sendData/dataSender.js";
+import {uploadFile} from "./uploadManager/uploader.js";
 
 
 const headlineAssignment = {
@@ -40,6 +41,8 @@ export async function buildUI() {
     buildBaseUi("educationalLevel");
 
     buildSubmitButton(container);
+
+    setUpUploadButton();
 }
 
 
@@ -74,4 +77,12 @@ function buildSubmitButton(container){
     row.appendChild(submitButton);
 
     container.appendChild(row);
+}
+
+
+function setUpUploadButton() {
+    const button = document.getElementById("file_upload");
+    
+    button.addEventListener('change', uploadFile, false);
+    
 }
