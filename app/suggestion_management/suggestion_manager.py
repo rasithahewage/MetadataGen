@@ -1,7 +1,7 @@
 from app.suggestion_engine.similarity_search import search_frameworks
 from app.suggestion_engine.suggestion_output_parser import parse_suggestion
 from app.llm_support.chain_educational_level_parser import parse_educational_level_input
-from app.llm_support.gemini_chain import execute_chain
+from app.llm_support.chain_manager import get_chain_by_config
 from app.llm_support.chain_output_parser import parse_chain_output
 from app.metadatabuilder.build_full_metadata import build_metadata
 from app.metadatabuilder.build_optional_metadata import build_optional_metadata
@@ -24,6 +24,8 @@ def generate_full_suggestion(raw_data: dict) -> dict:
     """
     query = f"{raw_data['name']}. {raw_data['description']}"
     query = translate(query)
+
+    execute_chain = get_chain_by_config().execute_chain
 
     if "teaches" in raw_data.keys():
         teaches_framework = raw_data["teaches"]
@@ -71,6 +73,8 @@ def generate_optional_suggestions(raw_data):
 
     query = f"{raw_data['name']}. {raw_data['description']}"
     query = translate(query)
+
+    execute_chain = get_chain_by_config().execute_chain
 
     teaches = search_frameworks([{"educationalFramework": "ESCO"}], query)
     teaches = parse_suggestion(teaches)

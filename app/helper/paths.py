@@ -22,3 +22,9 @@ SUGGESTION_ENGINE_CONF = (
     SUGGESTION_ENGINE_ROOT /
     "conf.yml"
 )
+
+LLM_CONF = (
+    APP_ROOT /
+    "llm_support" /
+    "conf.yml"
+)

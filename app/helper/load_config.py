@@ -1,5 +1,5 @@
 from yaml import load, CLoader
-from .paths import FRAMEWORK_ROOT, SUGGESTION_ENGINE_CONF
+from .paths import FRAMEWORK_ROOT, SUGGESTION_ENGINE_CONF, LLM_CONF
 
 
 def load_framework_conf(framework: str, group: str) -> dict:
@@ -27,4 +27,9 @@ def load_framework_conf(framework: str, group: str) -> dict:
 
 def load_suggestion_engine_conf() -> dict:
     with open(SUGGESTION_ENGINE_CONF, 'r') as f:
+        return load(f.read(), Loader=CLoader)
+
+
+def load_llm_config() -> dict:
+    with open(LLM_CONF, 'r') as f:
         return load(f.read(), Loader=CLoader)

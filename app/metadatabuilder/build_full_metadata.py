@@ -32,6 +32,6 @@ def build_metadata(data: dict) -> dict:
     optional_attributes = build_optional_metadata(data)
     metadata.update(optional_attributes)
 
-    #write_log(metadata)
+    write_log(metadata)
 
     return metadata
