@@ -2,8 +2,6 @@ services:
   metadata_gen:
     build:
       .
-    ports:
-      - '80:5000'
     env_file:
       - '.env'
     container_name:
