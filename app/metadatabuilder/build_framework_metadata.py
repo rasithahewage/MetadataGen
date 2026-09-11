@@ -48,10 +48,14 @@ def build_framework_fragment(framework_data: dict, group: str):
     # From the config of the selected framework
     framework_data["educationalFrameworkVersion"] = conf["VERSION"]
     framework_data["url"] = conf["URL"]
+    
+    concept_url = framework_data.get("conceptUrl")
+    if not concept_url:
+        # Nothing to enrich with — leave the fragment as-is rather than crashing
+        return
 
     # Data from the framework CSV
-    additional_data = get_name_and_description(framework, group,
-                                               framework_data["conceptUrl"])
+    additional_data = get_name_and_description(framework, group, concept_url)
 
     for k, v in generate_name_and_description_fragment(additional_data, conf).items():
         framework_data[k] = v
